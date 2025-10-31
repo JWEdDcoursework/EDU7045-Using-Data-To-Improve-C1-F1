@@ -1,0 +1,310 @@
+import React, { useState } from 'react';
+import { BookOpen, Target, BarChart3, Database, Users, TrendingUp, GraduationCap, DollarSign, Award, ChevronDown, ChevronUp } from 'lucide-react';
+
+const MVCCAssessmentVisualization = () => {
+  const [activeComponent, setActiveComponent] = useState(null);
+
+  const components = {
+    apr: {
+      title: "Academic Program Review (APRs)",
+      icon: BookOpen,
+      color: "from-blue-500 to-blue-700",
+      cycle: "5-Year Cycle",
+      description: "SUNY-influenced program assessment",
+      features: [
+        "All academic credentials (Certificate, AOS, AAS, AS, AA)",
+        "Student Learning Outcomes at program-level",
+        "Reflection on measures, findings, and actions",
+        "External reviewers on final reports"
+      ],
+      dataPoints: ["Program Learning Outcomes", "Assessment Methods", "Major Findings", "Action Plans"]
+    },
+    poar: {
+      title: "Program Outcomes Assessment Report (POARs)",
+      icon: Target,
+      color: "from-purple-500 to-purple-700",
+      cycle: "Ongoing & Annual",
+      description: "Department/School goals for student success",
+      features: [
+        "Ongoing department/School goals aligned to Strategic Plan",
+        "Annual goals tied to budget",
+        "Assessment methods with benchmarks",
+        "Results tracking and action recommendations"
+      ],
+      dataPoints: ["Strategic Plan Alignment", "Intended Outcomes", "Benchmarks", "Results & Actions"]
+    },
+    dashboard: {
+      title: "Deans Dashboard",
+      icon: BarChart3,
+      color: "from-orange-500 to-orange-700",
+      cycle: "Per Semester",
+      description: "Real-time course success monitoring",
+      features: [
+        "Course success rates by semester",
+        "13 disaggregation dimensions available",
+        "Comparative analytics across cohorts",
+        "Equity gap identification and tracking"
+      ],
+      dataPoints: ["Success Rates", "Enrollment Patterns", "Demographic Data", "Modality Analysis"]
+    },
+    ipeds: {
+      title: "IPEDS Institutional Data Collection",
+      icon: Database,
+      color: "from-indigo-500 to-indigo-700",
+      cycle: "Annual Reporting",
+      description: "Comprehensive federal reporting framework",
+      features: [
+        "37 institutional metrics across 6 categories",
+        "Enrollment, completion, and retention data",
+        "Financial aid and net price analytics",
+        "Outcome tracking and staffing metrics"
+      ],
+      dataPoints: ["Enrollment", "Completion", "Financial Aid", "Retention", "Outcomes", "Institutional"]
+    }
+  };
+
+  const disaggregationOptions = [
+    "Student Program", "Matriculation Status", "Age Category", "Academic School",
+    "Major in Term", "Campus", "Instructional Method/Modality", "Ethnicity",
+    "Student Type", "PELL Eligibility", "Gender", "Athlete Status", "Housing Status"
+  ];
+
+  const ipedsCategories = [
+    { icon: Users, title: "Enrollment", count: "5 metrics", color: "text-blue-500" },
+    { icon: GraduationCap, title: "Completion", count: "9 metrics", color: "text-purple-500" },
+    { icon: DollarSign, title: "Financial Aid", count: "7 metrics", color: "text-emerald-500" },
+    { icon: TrendingUp, title: "Retention", count: "2 metrics", color: "text-orange-500" },
+    { icon: Award, title: "Outcomes", count: "8 metrics", color: "text-pink-500" },
+    { icon: Database, title: "Institutional", count: "6 metrics", color: "text-indigo-500" }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-green-200 to-emerald-300 p-8">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto mb-12">
+        <div className="text-center mb-8">
+          <h1 className="text-5xl font-bold text-slate-800 mb-4">
+            Academic Success Structure
+          </h1>
+          <h2 className="text-2xl text-slate-600 mb-2">
+            Mohawk Valley Community College
+          </h2>
+          <p className="text-lg text-slate-500">
+            Institutional Data Collection & Assessment Framework
+          </p>
+        </div>
+
+        {/* Main Assessment Components */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+          {Object.entries(components).map(([key, component]) => {
+            const Icon = component.icon;
+            const isActive = activeComponent === key;
+            
+            return (
+              <div
+                key={key}
+                className={`relative bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105 ${
+                  isActive ? 'ring-4 ring-blue-400' : ''
+                }`}
+                onClick={() => setActiveComponent(isActive ? null : key)}
+              >
+                {/* Gradient Header */}
+                <div className={`bg-gradient-to-r ${component.color} p-6 text-white`}>
+                  <Icon className="w-12 h-12 mb-3" />
+                  <h3 className="text-2xl font-bold mb-2">{component.title}</h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                      {component.cycle}
+                    </span>
+                    {isActive ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6">
+                  <p className="text-slate-600 mb-4 font-medium">{component.description}</p>
+                  
+                  {isActive && (
+                    <div className="space-y-4 animate-fadeIn">
+                      <div>
+                        <h4 className="font-semibold text-slate-700 mb-2">Key Features:</h4>
+                        <ul className="space-y-2">
+                          {component.features.map((feature, idx) => (
+                            <li key={idx} className="flex items-start">
+                              <span className="text-blue-500 mr-2">•</span>
+                              <span className="text-sm text-slate-600">{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h4 className="font-semibold text-slate-700 mb-2">Data Components:</h4>
+                        <div className="flex flex-wrap gap-2">
+                          {component.dataPoints.map((point, idx) => (
+                            <span
+                              key={idx}
+                              className="text-xs bg-slate-100 text-slate-700 px-3 py-1 rounded-full"
+                            >
+                              {point}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Dashboard Disaggregation Options */}
+                      {key === 'dashboard' && (
+                        <div className="pt-4 border-t border-slate-200">
+                          <h4 className="font-semibold text-slate-700 mb-3">
+                            Disaggregation Options (13 Dimensions):
+                          </h4>
+                          <div className="grid grid-cols-2 gap-2">
+                            {disaggregationOptions.map((option, idx) => (
+                              <div
+                                key={idx}
+                                className="bg-gradient-to-br from-orange-50 to-orange-100 border border-orange-200 rounded-lg px-3 py-2 text-center"
+                              >
+                                <span className="text-xs font-medium text-orange-700">{option}</span>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* IPEDS Categories */}
+                      {key === 'ipeds' && (
+                        <div className="pt-4 border-t border-slate-200">
+                          <h4 className="font-semibold text-slate-700 mb-3">
+                            6 Major Categories:
+                          </h4>
+                          <div className="grid grid-cols-2 gap-3">
+                            {ipedsCategories.map((category, idx) => {
+                              const Icon = category.icon;
+                              return (
+                                <div
+                                  key={idx}
+                                  className="bg-gradient-to-br from-indigo-50 to-white border border-indigo-200 rounded-lg p-3"
+                                >
+                                  <Icon className={`w-6 h-6 mb-2 ${category.color}`} />
+                                  <h5 className="text-xs font-bold text-slate-800">{category.title}</h5>
+                                  <p className="text-xs text-slate-500">{category.count}</p>
+                                </div>
+                              );
+                            })}
+                          </div>
+                          <div className="mt-4 bg-indigo-50 rounded-lg p-4">
+                            <p className="text-xs text-slate-600">
+                              <strong>Measures include:</strong> Enrollment by demographics, 12-month/fall enrollment, 
+                              distance education, degrees conferred, tuition/fees, net price, grants/loans, 
+                              Pell distribution, retention rates, graduation rates, 8-year outcomes, revenue/expenses, 
+                              FTE staff, and library metrics.
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Data Flow Visualization */}
+        <div className="mt-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl shadow-lg p-8 text-white">
+          <h3 className="text-3xl font-bold mb-6 text-center">Data Flow & Integration</h3>
+          <div className="flex flex-col md:flex-row items-center justify-around space-y-4 md:space-y-0">
+            <div className="text-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-4 inline-block mb-3">
+                <BookOpen className="w-12 h-12" />
+              </div>
+              <p className="font-semibold">Course-Level<br />Assessment</p>
+            </div>
+            
+            <div className="hidden md:block text-4xl">→</div>
+            
+            <div className="text-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-4 inline-block mb-3">
+                <Database className="w-12 h-12" />
+              </div>
+              <p className="font-semibold">Program-Level<br />Assessment</p>
+            </div>
+            
+            <div className="hidden md:block text-4xl">→</div>
+            
+            <div className="text-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-4 inline-block mb-3">
+                <BarChart3 className="w-12 h-12" />
+              </div>
+              <p className="font-semibold">Real-Time<br />Monitoring</p>
+            </div>
+            
+            <div className="hidden md:block text-4xl">→</div>
+            
+            <div className="text-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-4 inline-block mb-3">
+                <TrendingUp className="w-12 h-12" />
+              </div>
+              <p className="font-semibold">Institutional<br />Reporting</p>
+            </div>
+            
+            <div className="hidden md:block text-4xl">→</div>
+            
+            <div className="text-center">
+              <div className="bg-white bg-opacity-20 rounded-full p-4 inline-block mb-3">
+                <Award className="w-12 h-12" />
+              </div>
+              <p className="font-semibold">Continuous<br />Improvement</p>
+            </div>
+          </div>
+        </div>
+
+        {/* References Section */}
+        <div className="mt-12 bg-white rounded-2xl shadow-lg p-8">
+          <h3 className="text-2xl font-bold text-slate-800 mb-6">References</h3>
+          <div className="space-y-3 text-sm text-slate-700">
+            <p className="pl-6 -indent-6">
+              Institute of Education Sciences. (2024). <em>IPEDS Data Feedback Report 2024</em>. 
+              <a 
+                href="https://nces.ed.gov/ipeds/dfr/2024/ReportHTML.aspx?unitId=193283" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="text-blue-600 hover:text-blue-800 ml-1"
+              >
+                https://nces.ed.gov/ipeds/dfr/2024/ReportHTML.aspx?unitId=193283
+              </a>
+            </p>
+            <p className="pl-6 -indent-6">
+              Mohawk Valley Community College. (2024). <em>Program Outcomes Assessment Report for Academic Schools</em>.
+            </p>
+            <p className="pl-6 -indent-6">
+              Mohawk Valley Community College. (2025). <em>Fall 2025 Deans Dashboard</em>.
+            </p>
+            <p className="pl-6 -indent-6">
+              Mohawk Valley Community College. <em>MVCC Academic Program Review (APR)</em>.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <style jsx>{`
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+        
+        .animate-fadeIn {
+          animation: fadeIn 0.3s ease-out;
+        }
+      `}</style>
+    </div>
+  );
+};
+
+export default MVCCAssessmentVisualization;
